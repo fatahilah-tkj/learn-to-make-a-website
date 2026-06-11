@@ -1,151 +1,413 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Dashboard Info IT & Networking</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Dashboard Info IT & Networking - TKJ</title>
     <style>
-        /* 1. KENDALI DESAIN (VARIABEL) */
+        /* ========== 1. VARIABEL DESAIN (SISTEM) ========== */
         :root {
-            --bg-page: #0f172a;       /* Warna gelap (Slate) modern */
-            --bg-card: #1e293b;       /* Kotak kontainer sedikit lebih terang */
-            --accent: #38bdf8;        /* Warna biru muda khas anak jaringan/TKJ */
-            --text-main: #f8fafc;     /* Warna teks putih bersih */
-            --text-muted: #94a3b8;    /* Warna teks abu-abu untuk deskripsi */
-            --radius: 8px;
+            --bg-page: #0f172a;       /* slate gelap modern */
+            --bg-card: #1e293b;       /* card lebih terang */
+            --bg-card-hover: #334155;  /* efek hover tombol */
+            --accent: #38bdf8;        /* biru terang khas jaringan */
+            --accent-glow: #0ea5e9;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
         }
 
-        /* 2. GAYA HALAMAN UTAMA */
+        /* ========== 2. GAYA DASAR + RESET MOBILE-FIRST ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background-color: var(--bg-page);
             color: var(--text-main);
-            font-family: system-ui, -apple-system, sans-serif;
-            padding: 20px;
-            margin: 0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: var(--spacing-md);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* kontainer utama agar lebar tidak terlalu lebar di desktop */
+        .app-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* header dengan spacing rapi */
+        header {
+            margin-bottom: var(--spacing-lg);
+            border-bottom: 2px solid rgba(56, 189, 248, 0.2);
+            padding-bottom: var(--spacing-md);
         }
 
         header h1 {
             color: var(--accent);
-            margin-bottom: 5px;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
+            letter-spacing: -0.02em;
+            word-break: break-word;
         }
 
         header p {
             color: var(--text-muted);
-            margin-top: 0;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            margin-top: var(--spacing-xs);
         }
 
-        /* 3. GAYA TOMBOL NAVIGASI */
-        #navigasi-materi button {
+        /* ========== 3. NAVIGASI / TOMBOL MATERI (GRID RESPONSIF) ========== */
+        .nav-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .nav-section h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+        }
+
+        /* wadah tombol menggunakan flex/grid hybrid agar responsif */
+        .button-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* gaya tombol: sentuhan modern, mudah disentuh di HP */
+        .btn-materi {
             background-color: var(--bg-card);
             color: var(--accent);
             border: 1px solid var(--accent);
-            padding: 10px 16px;
-            border-radius: var(--radius);
-            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 40px;      /* bentuk pill lebih modern dan nyaman di tap */
+            font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            backdrop-filter: blur(2px);
+            letter-spacing: 0.3px;
+            /* ukuran minimal area sentuh */
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Efek saat tombol ditekan/di-klik di HP */
-        #navigasi-materi button:active {
+        /* efek hover untuk desktop, sentuhan aktif untuk HP */
+        .btn-materi:hover {
             background-color: var(--accent);
             color: var(--bg-page);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px -4px rgba(56, 189, 248, 0.3);
         }
 
-        /* 4. GAYA KOTAK KONTEN DINAMIS */
-        #konten-materi {
-            margin-top: 25px;
-            padding: 20px;
+        .btn-materi:active {
+            transform: translateY(1px);
+            background-color: var(--accent-glow);
+            color: #0f172a;
+            transition: 0.05s;
+        }
+
+        /* ========== 4. KONTEN CARD (MATERI DINAMIS) ========== */
+        .konten-card {
             background-color: var(--bg-card);
-            border-radius: var(--radius);
-            border-left: 4px solid var(--accent); /* Memberi aksen garis di sebelah kiri */
+            border-radius: var(--radius-md);
+            border-left: 5px solid var(--accent);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s ease;
+            margin-top: var(--spacing-sm);
         }
 
         #judul-materi {
             color: var(--accent);
-            margin-top: 0;
-            margin-bottom: 12px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            word-break: break-word;
+            border-left: 3px solid var(--accent);
+            padding-left: 16px;
         }
 
         #detail-materi {
             color: var(--text-main);
-            line-height: 1.6;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            line-height: 1.65;
+        }
+
+        /* gaya untuk daftar / teks tebal di dalam materi */
+        #detail-materi strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        #detail-materi code {
+            background: #0f172a;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            color: #facc15;
+        }
+
+        /* state kosong / inisial */
+        .empty-state {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* ========== 5. MEDIA QUERIES (RESPONSIF HP & DESKTOP) ========== */
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .btn-materi {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+                min-height: 44px;
+                border-radius: 32px;
+            }
+
+            .button-grid {
+                gap: 10px;
+            }
+
+            .konten-card {
+                padding: 18px;
+            }
+
+            #judul-materi {
+                font-size: 1.25rem;
+                padding-left: 12px;
+                margin-bottom: 12px;
+            }
+
+            #detail-materi {
+                font-size: 0.92rem;
+            }
+        }
+
+        /* untuk layar sangat kecil (lipat/HP sempit) */
+        @media (max-width: 480px) {
+            .btn-materi {
+                flex: 1 0 auto;
+                justify-content: center;
+                text-align: center;
+            }
+            /* tombol tidak terlalu kecil dan mudah diklik */
+            .button-grid {
+                gap: 8px;
+            }
+        }
+
+        /* desktop besar: tetap nyaman */
+        @media (min-width: 1024px) {
+            .button-grid {
+                gap: 16px;
+            }
+            .btn-materi {
+                padding: 12px 28px;
+                font-size: 1rem;
+            }
+            .konten-card {
+                padding: 28px;
+            }
+        }
+
+        /* aksesibilitas: fokus ring */
+        .btn-materi:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+            background-color: #2c3e66;
+        }
+
+        /* scroll halus */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
-
 </head>
 <body>
-
+<div class="app-container">
     <header>
-        <h1>TKJ Networking Dashboard</h1>
-        <p>Catatan Teori Jaringan & Solusi Troubleshooting</p>
+        <h1>📡 TKJ Networking Dashboard</h1>
+        <p>Catatan Teori Jaringan & Solusi Troubleshooting • siap uji kompetensi & praktik</p>
     </header>
 
     <main>
-    <main>
-        <!-- Bagian Tempat Tombol yang Akan Dibuat Otomatis oleh JS -->
-        <section id="navigasi-materi">
-            <h3>Pilih Materi Jaringan:</h3>
-            <div id="wadah-tombol"></div> <!-- Tombol akan muncul di sini -->
+        <!-- bagian navigasi materi -->
+        <section class="nav-section">
+            <h3>📌 Pilih Materi Jaringan :</h3>
+            <div id="wadah-tombol" class="button-grid">
+                <!-- tombol akan di generate oleh javascript secara dinamis -->
+            </div>
         </section>
 
-        <!-- Bagian Tempat Menampilkan Penjelasan Materi -->
-        <section id="konten-materi">
-            <h4 id="judul-materi">Klik salah satu tombol di atas</h4>
-            <p id="detail-materi">Detail penjelasan materi jaringan akan muncul di sini secara dinamis.</p>
+        <!-- bagian konten dinamis (card info) -->
+        <section class="konten-card" id="konten-materi">
+            <h4 id="judul-materi">✨ Dashboard Siap Digunakan</h4>
+            <p id="detail-materi">Klik salah satu tombol materi di atas untuk melihat teori, rumus subnetting, konsep DNS, static routing, dan masih banyak lagi. <br>📱 <strong>Tampilan responsif</strong> — akses dari HP atau desktop tetap nyaman.</p>
         </section>
     </main>
+</div>
 
-    </main>
-    <script>
-        // 1. DATA PUSAT MATERI (Bisa ditambah sesukamu di sini)
-        const daftarMateri = [
-            {
-                id: "subnetting",
-                nama: "Subnetting",
-                judul: "Teori Subnetting (CIDR)",
-                deskripsi: "Subnetting adalah teknik memecah jaringan besar menjadi beberapa jaringan kecil.<br><br><strong>Rumus Cepat:</strong><br>Jumlah IP = 2^(32 - Prefiks). Contoh: /24 -> 32 - 24 = 8. Maka 2^8 = 256 IP Address."
-            },
-            {
-                id: "dns",
-                nama: "DNS Server",
-                judul: "Domain Name System (DNS)",
-                deskripsi: "DNS adalah protokol yang menerjemahkan nama domain (seperti google.com) menjadi IP Address (seperti 8.8.8.8) yang dipahami oleh perangkat jaringan."
-            },
-            {
-                id: "routing",
-                nama: "Static Routing", // Materi baru tambahan!
-                judul: "Konsep Static Routing",
-                deskripsi: "Static routing adalah konfigurasi rute jaringan yang dilakukan secara manual oleh administrator. Cocok untuk jaringan skala kecil karena hemat resource router."
-            }
-        ];
+<script>
+    // ========== PUSAT DATA MATERI (DAPAT DITAMBAH SESUAI KEBUTUHAN TKJ) ==========
+    const daftarMateri = [
+        {
+            id: "subnetting",
+            nama: "Subnetting",
+            judul: "🌐 Teori Subnetting & CIDR",
+            deskripsi: `<strong>Subnetting</strong> adalah teknik membagi sebuah jaringan besar menjadi beberapa subnet (jaringan kecil) untuk efisiensi IP dan keamanan.<br><br>
+            📐 <strong>Rumus Cepat (CIDR):</strong><br>
+            🔹 Jumlah alamat IP = 2^(32 - prefiks)<br>
+            🔹 Contoh: <code>/24</code> → 32 - 24 = 8 → 2^8 = <strong>256 IP</strong> (termasuk network & broadcast).<br>
+            🔹 Contoh: <code>/26</code> → 64 IP, cocok untuk kantor kecil.<br><br>
+            ⚙️ <strong>Tips troubleshooting:</strong> Pastikan subnet mask sama antar perangkat dalam satu network. Gunakan kalkulator subnet untuk efisiensi.`
+        },
+        {
+            id: "dns",
+            nama: "DNS Server",
+            judul: "🔄 Domain Name System (DNS)",
+            deskripsi: `<strong>DNS (Domain Name System)</strong> berfungsi seperti "buku telepon internet". Menerjemahkan nama domain (contoh: <code>google.com</code>) menjadi IP Address (contoh: <code>142.250.185.46</code>).<br><br>
+            🔧 <strong>Cek DNS di Windows:</strong> <code>nslookup google.com</code><br>
+            📱 <strong>Masalah umum:</strong> DNS server tidak merespon → ganti DNS publik seperti <strong>8.8.8.8 (Google)</strong> atau <strong>1.1.1.1 (Cloudflare)</strong>.<br><br>
+            💡 <strong>Tip TKJ:</strong> Setelah mengganti DNS, jalankan <code>ipconfig /flushdns</code> untuk menghapus cache.`
+        },
+        {
+            id: "routing",
+            nama: "Static Routing",
+            judul: "🗺️ Konsep Static Routing",
+            deskripsi: `<strong>Static Routing</strong> adalah metode konfigurasi jalur jaringan secara manual oleh administrator. Cocok untuk jaringan skala kecil atau menengah karena tidak membebani resource router.<br><br>
+            ✏️ <strong>Contoh perintah pada Router Cisco:</strong><br>
+            <code>ip route 192.168.2.0 255.255.255.0 192.168.1.2</code><br><br>
+            🧠 <strong>Kelebihan:</strong> Tidak ada overhead CPU, aman karena rute tetap.<br>
+            ⚠️ <strong>Kekurangan:</strong> Jika topologi berubah, admin harus update manual.<br>
+            📌 <strong>Troubleshooting:</strong> Pastikan next-hop reachable, cek dengan <code>ping</code> dan <code>tracert</code>.`
+        },
+        {
+            id: "dhcp",
+            nama: "DHCP Server",
+            judul: "⚙️ DHCP (Dynamic Host Configuration Protocol)",
+            deskripsi: `<strong>DHCP</strong> secara otomatis memberikan konfigurasi IP Address, subnet mask, gateway, dan DNS ke perangkat klien. Mengurangi konflik IP dan memudahkan administrasi jaringan.<br><br>
+            📋 <strong>Cara kerja DORA:</strong> Discovery → Offer → Request → Acknowledge.<br>
+            🛠️ <strong>Troubleshooting umum:</strong> Klien tidak mendapat IP → pastikan DHCP server aktif dan scope tidak habis.<br>
+            💻 <strong>Perintah (Windows):</strong> <code>ipconfig /renew</code> untuk meminta IP baru.`
+        },
+        {
+            id: "vlan",
+            nama: "VLAN",
+            judul: "🔌 VLAN (Virtual Local Area Network)",
+            deskripsi: `<strong>VLAN</strong> memisahkan jaringan secara logis meskipun dalam switch fisik yang sama. Meningkatkan keamanan dan mengurangi broadcast domain.<br><br>
+            🧩 <strong>Tag VLAN (802.1Q):</strong> Menambahkan ID VLAN di header Ethernet.<br>
+            📡 <strong>Contoh penerapan:</strong> VLAN 10 untuk staff, VLAN 20 untuk guest, VLAN 30 untuk server.<br>
+            🔍 <strong>Praktik TKJ:</strong> Konfigurasi trunk dan access port di switch manageable.`
+        },
+        {
+            id: "osi",
+            nama: "OSI Layer",
+            judul: "🧠 Model OSI Layer (7 Layer)",
+            deskripsi: `<strong>Model OSI (Open Systems Interconnection)</strong> : kerangka konseptual untuk memahami komunikasi jaringan.<br><br>
+            🟢 <strong>7 Lapisan (dari bawah ke atas):</strong><br>
+            1️⃣ Physical (kabel, sinyal)<br>
+            2️⃣ Data Link (MAC address, switch)<br>
+            3️⃣ Network (IP, routing)<br>
+            4️⃣ Transport (TCP/UDP, port)<br>
+            5️⃣ Session (manajemen sesi)<br>
+            6️⃣ Presentation (enkripsi, konversi data)<br>
+            7️⃣ Application (HTTP, DNS, SMTP)<br><br>
+            🎯 <strong>Tips troubleshooting layer:</strong> "All People Seem To Need Data Processing" (mnemonic dari layer 7 ke 1) 🧩`
+        },
+        {
+            id: "troubleshoot",
+            nama: "Troubleshooting",
+            judul: "🛠️ Panduan Troubleshooting Jaringan",
+            deskripsi: `<strong>Langkah-langkah troubleshooting standar TKJ:</strong><br>
+            🔹 1. <strong>Periksa fisik</strong> (kabel, port, lampu indikator)<br>
+            🔹 2. <strong>Perintah Dasar:</strong> <code>ipconfig / ifconfig</code> , <code>ping</code> (uji konektivitas)<br>
+            🔹 3. <code>tracert / traceroute</code> (lihat jalur paket)<br>
+            🔹 4. <code>nslookup</code> (uji DNS)<br>
+            🔹 5. <code>netstat -an</code> (cek port terbuka)<br>
+            📌 <strong>Solusi cepat:</strong> Restart modem/router, lepaskan cache DNS (<code>ipconfig /flushdns</code>), matikan firewall sementara untuk uji coba.`
+        }
+    ];
 
-        // 2. AMBIL ELEMEN WADAH DARI HTML
-        const wadahTombol = document.getElementById('wadah-tombol');
-        const judulMateri = document.getElementById('judul-materi');
-        const detailMateri = document.getElementById('detail-materi');
+    // referensi elemen HTML
+    const wadahTombol = document.getElementById('wadah-tombol');
+    const judulMateri = document.getElementById('judul-materi');
+    const detailMateri = document.getElementById('detail-materi');
 
-        // 3. LOGIKA OTOMATISASI GENERATE TOMBOL
-        daftarMateri.forEach(function(materi) {
-            // Buat elemen <button> baru di memori HP
-            const tombolBaru = document.createElement('button');
-            tombolBaru.textContent = materi.nama;
+    // Fungsi untuk membersihkan dan meng-generate semua tombol materi (responsif & dinamis)
+    function generateTombolMateri() {
+        // Kosongkan dulu wadah agar tidak double saat reload (tapi karena hanya dijalankan sekali, aman)
+        wadahTombol.innerHTML = '';
+
+        // Looping setiap materi lalu buat tombol
+        daftarMateri.forEach(materi => {
+            const tombol = document.createElement('button');
+            tombol.className = 'btn-materi';
+            tombol.textContent = materi.nama;
+            // tambahkan atribut data untuk kemudahan debugging
+            tombol.setAttribute('data-id', materi.id);
             
-            // Berikan fungsi klik pada tombol baru tersebut
-            tombolBaru.addEventListener('click', function() {
+            // Event listener klik: mengubah konten card
+            tombol.addEventListener('click', () => {
+                // Update judul dan detail materi dengan animasi halus (opsional)
                 judulMateri.textContent = materi.judul;
                 detailMateri.innerHTML = materi.deskripsi;
+                // Opsional: scroll halus ke bagian konten (berguna di HP setelah klik)
+                const kontenSection = document.getElementById('konten-materi');
+                if (kontenSection) {
+                    kontenSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             });
-
-            // Masukkan tombol baru yang sudah jadi ke dalam <div id="wadah-tombol">
-            wadahTombol.appendChild(tombolBaru);
+            
+            wadahTombol.appendChild(tombol);
         });
-    </script>
+    }
 
+    // tambahan fitur: jika ingin menampilkan materi default pertama saat halaman dimuat (opsional agar tidak kosong)
+    function setDefaultMateri() {
+        if (daftarMateri.length > 0) {
+            const defaultMateri = daftarMateri[0];
+            judulMateri.textContent = defaultMateri.judul;
+            detailMateri.innerHTML = defaultMateri.deskripsi;
+        } else {
+            // pesan fallback jika data kosong (tidak mungkin karena sudah ada data)
+            judulMateri.textContent = "Selamat Datang di Dashboard TKJ";
+            detailMateri.innerHTML = "Silahkan pilih materi jaringan di tombol navigasi. Data materi akan segera tersedia.";
+        }
+    }
 
+    // ========== INISIALISASI DAN PERBAIKAN DUPLIKASI MAIN ==========
+    // Halaman sebelumnya memiliki duplikasi tag <main> dan error struktural, namun sekarang sudah diperbaiki dengan hanya satu main.
+    // Script tetap berjalan tanpa error.
+    generateTombolMateri();
+    setDefaultMateri();
+
+    // TAMBAHAN: dynamic responsif jika ada resize (tidak perlu, karena CSS Grid/Flex sudah responsif)
+    // Opsional: efek sentuhan untuk perangkat sentuh lebih responsif (sudah di CSS :active)
+    // console.log("Dashboard TKJ responsif siap digunakan!");
+</script>
 </body>
 </html>
