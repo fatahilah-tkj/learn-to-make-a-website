@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Info IT & Networking</title>
+    <style>
+        /* 1. KENDALI DESAIN (VARIABEL) */
+        :root {
+            --bg-page: #0f172a;       /* Warna gelap (Slate) modern */
+            --bg-card: #1e293b;       /* Kotak kontainer sedikit lebih terang */
+            --accent: #38bdf8;        /* Warna biru muda khas anak jaringan/TKJ */
+            --text-main: #f8fafc;     /* Warna teks putih bersih */
+            --text-muted: #94a3b8;    /* Warna teks abu-abu untuk deskripsi */
+            --radius: 8px;
+        }
+
+        /* 2. GAYA HALAMAN UTAMA */
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        header h1 {
+            color: var(--accent);
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin-top: 0;
+            font-size: 0.9rem;
+        }
+
+        /* 3. GAYA TOMBOL NAVIGASI */
+        #navigasi-materi button {
+            background-color: var(--bg-card);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 10px 16px;
+            border-radius: var(--radius);
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+        }
+
+        /* Efek saat tombol ditekan/di-klik di HP */
+        #navigasi-materi button:active {
+            background-color: var(--accent);
+            color: var(--bg-page);
+        }
+
+        /* 4. GAYA KOTAK KONTEN DINAMIS */
+        #konten-materi {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--accent); /* Memberi aksen garis di sebelah kiri */
+        }
+
+        #judul-materi {
+            color: var(--accent);
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        #detail-materi {
+            color: var(--text-main);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+    </style>
+
+</head>
+<body>
+
+    <header>
+        <h1>TKJ Networking Dashboard</h1>
+        <p>Catatan Teori Jaringan & Solusi Troubleshooting</p>
+    </header>
+
+    <main>
+    <main>
+        <!-- Bagian Tempat Tombol yang Akan Dibuat Otomatis oleh JS -->
+        <section id="navigasi-materi">
+            <h3>Pilih Materi Jaringan:</h3>
+            <div id="wadah-tombol"></div> <!-- Tombol akan muncul di sini -->
+        </section>
+
+        <!-- Bagian Tempat Menampilkan Penjelasan Materi -->
+        <section id="konten-materi">
+            <h4 id="judul-materi">Klik salah satu tombol di atas</h4>
+            <p id="detail-materi">Detail penjelasan materi jaringan akan muncul di sini secara dinamis.</p>
+        </section>
+    </main>
+
+    </main>
+    <script>
+        // 1. DATA PUSAT MATERI (Bisa ditambah sesukamu di sini)
+        const daftarMateri = [
+            {
+                id: "subnetting",
+                nama: "Subnetting",
+                judul: "Teori Subnetting (CIDR)",
+                deskripsi: "Subnetting adalah teknik memecah jaringan besar menjadi beberapa jaringan kecil.<br><br><strong>Rumus Cepat:</strong><br>Jumlah IP = 2^(32 - Prefiks). Contoh: /24 -> 32 - 24 = 8. Maka 2^8 = 256 IP Address."
+            },
+            {
+                id: "dns",
+                nama: "DNS Server",
+                judul: "Domain Name System (DNS)",
+                deskripsi: "DNS adalah protokol yang menerjemahkan nama domain (seperti google.com) menjadi IP Address (seperti 8.8.8.8) yang dipahami oleh perangkat jaringan."
+            },
+            {
+                id: "routing",
+                nama: "Static Routing", // Materi baru tambahan!
+                judul: "Konsep Static Routing",
+                deskripsi: "Static routing adalah konfigurasi rute jaringan yang dilakukan secara manual oleh administrator. Cocok untuk jaringan skala kecil karena hemat resource router."
+            }
+        ];
+
+        // 2. AMBIL ELEMEN WADAH DARI HTML
+        const wadahTombol = document.getElementById('wadah-tombol');
+        const judulMateri = document.getElementById('judul-materi');
+        const detailMateri = document.getElementById('detail-materi');
+
+        // 3. LOGIKA OTOMATISASI GENERATE TOMBOL
+        daftarMateri.forEach(function(materi) {
+            // Buat elemen <button> baru di memori HP
+            const tombolBaru = document.createElement('button');
+            tombolBaru.textContent = materi.nama;
+            
+            // Berikan fungsi klik pada tombol baru tersebut
+            tombolBaru.addEventListener('click', function() {
+                judulMateri.textContent = materi.judul;
+                detailMateri.innerHTML = materi.deskripsi;
+            });
+
+            // Masukkan tombol baru yang sudah jadi ke dalam <div id="wadah-tombol">
+            wadahTombol.appendChild(tombolBaru);
+        });
+    </script>
+
+
+</body>
+</html>
