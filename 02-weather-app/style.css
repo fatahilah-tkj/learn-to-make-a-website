@@ -373,3 +373,98 @@ header {
     font-size: 5rem;
   }
 }
+
+/* ========== DESKTOP LAYOUT (≥ 1024px) ========== */
+@media (min-width: 1024px) {
+  body {
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #app-wrapper {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  /* Ubah daily forecast menjadi grid 2 kolom */
+  #daily-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .daily-item {
+    padding: 16px 20px;
+  }
+
+  .daily-day {
+    width: auto;
+    font-size: 1rem;
+  }
+
+  .daily-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .daily-temp {
+    font-size: 1.125rem;
+  }
+
+  /* Hourly card lebih lebar */
+  .hourly-card {
+    flex: 0 0 120px;
+    padding: 14px 8px;
+  }
+
+  .hourly-time {
+    font-size: 0.9rem;
+  }
+
+  .hourly-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .hourly-temp {
+    font-size: 1rem;
+  }
+
+  /* Sedikit memperbesar ukuran teks utama */
+  #city-name {
+    font-size: 2.5rem;
+  }
+
+  #temperature {
+    font-size: 5.5rem;
+  }
+
+  .celsius {
+    font-size: 2rem;
+  }
+
+  #description {
+    font-size: 1.25rem;
+  }
+
+  .weather-details {
+    font-size: 1rem;
+    gap: 32px;
+  }
+
+  /* Form pencarian lebih lebar jika tampil */
+  #city-input {
+    font-size: 1.125rem;
+    padding: 14px 20px;
+  }
+
+  /* Tombol sedikit lebih besar */
+  #search-toggle-btn,
+  #gps-btn,
+  #search-submit {
+    width: 48px;
+    height: 48px;
+  }
+}
