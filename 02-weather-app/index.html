@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Weather App — Glassmorphism</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app-wrapper">
+    <header>
+      <div id="search-container">
+        <!-- Tombol ikon kaca pembesar (toggle search) -->
+        <button id="search-toggle-btn" aria-label="Cari kota" type="button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <!-- Form pencarian (hidden default) -->
+        <form id="search-form" class="hidden">
+          <input type="text" id="city-input" placeholder="Cari kota... misal: Jakarta" autocomplete="off">
+          <button type="submit" id="search-submit" aria-label="Cari">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </form>
+      </div>
+      <!-- Tombol GPS (wajib) -->
+      <button id="gps-btn" aria-label="Deteksi lokasi saya" type="button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+        </svg>
+      </button>
+    </header>
+
+    <main id="current-weather">
+      <h1 id="city-name">Jakarta</h1>
+      <div class="temp-section">
+        <span id="temperature">--</span>
+        <span class="celsius">°C</span>
+      </div>
+      <p id="description">--</p>
+      <div class="weather-details">
+        <span>💧 <span id="humidity">--</span>%</span>
+        <span>🌬️ <span id="wind-speed">--</span> m/s</span>
+      </div>
+    </main>
+
+    <section id="hourly-forecast">
+      <h2>Perkiraan 24 Jam</h2>
+      <div class="scroll-container" id="hourly-list">
+        <!-- nanti diisi JS -->
+        <div class="hourly-placeholder">Memuat data per jam...</div>
+      </div>
+    </section>
+
+    <section id="daily-forecast">
+      <h2>5 Hari ke Depan</h2>
+      <ul id="daily-list">
+        <li class="daily-placeholder">Memuat data harian...</li>
+      </ul>
+    </section>
+
+    <!-- Loading & Error State -->
+    <div id="loading-state" class="state-overlay hidden">
+      <div class="spinner"></div>
+      <p>Mengambil data cuaca...</p>
+    </div>
+    <div id="error-state" class="state-overlay hidden">
+      <p>⚠️ Terjadi kesalahan. Coba lagi nanti.</p>
+      <button id="error-retry-btn">Coba Lagi</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
